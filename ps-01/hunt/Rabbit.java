@@ -17,17 +17,10 @@ public class Rabbit extends Animal {
         int dRow[] = { -1, -1, 0, 1, 1, 1, 0, 1};
         int dCol[] = { 0, 1, 1, 1, 0, -1, -1, -1};
 
-        boolean atEdge = false;
         boolean seenFox = false;
         int dir = -1;
 
-        List<Integer> edgeDist = new ArrayList<>();
-
         for (int i = Model.MIN_DIRECTION; i <= Model.MAX_DIRECTION; i++){
-
-            if (look(i) == Model.EDGE && distance(i) <= 2) {
-                atEdge = true;
-            }
 
             if (look(i) == Model.FOX) {
 
@@ -36,27 +29,36 @@ public class Rabbit extends Animal {
             }
         }
 
-        // if (atEdge && seenFox) {
-
-        //     int curDist = distance(dir);
-
-        //     for (int j = 0; j < 8; j+= 2) {
-
-        //         if (distance(j) > curDist && canMove(j)){
-        //             curDist = distance(j);
-        //             curDir = j;
-        //         }
-
-        //     }
-
-        //     return curDir;
-        // }
-
-
         if (seenFox) {
             int[] foxLoc = calcFoxCoord(this.row, this.column, distance(dir), dir);
 
             int curDist = distance(dir);
+            int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
+
+            if (curDist <= 2){
+              
+              if (canMove(Model.turn(dir, 3))){
+                return Model.turn(dir, 3);
+              }
+
+              else if (canMove(Model.turn(dir, 5))) {
+                return Model.turn(dir, 5);
+              }
+              else {
+
+                for (int i = 0; i < 8; i++) {
+                  
+                  if (i == dir){
+                    continue;
+                  }
+
+                  if (canMove(i)){
+                    return i;
+                  }
+                }
+              }
+
+            }
 
             for (int j = 0; j < 8; j++) {
                 int adjx = this.row + dRow[j];
@@ -76,10 +78,27 @@ public class Rabbit extends Animal {
                     else {
                         int distance = calcDist(foxLoc[0], foxLoc[1], adjx, adjy);
 
-                        if (distance > curDist && canMove(j)) {
+                        if (midDist >= (Model.NUMBER_OF_ROWS / 4)){
+
+                          int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
+
+
+                          if (distance >= curDist && canMove(j) && distanceToMid < midDist) {
                             curDist = distance;
                             curDir = j;
+                            midDist = distanceToMid;
+                          }
+
                         }
+
+                        else {
+
+                          if (distance > curDist && canMove(j)) {
+                              curDist = distance;
+                              curDir = j;
+                          }
+                        }
+
 
                     }
 
@@ -89,6 +108,28 @@ public class Rabbit extends Animal {
             }
 
         }
+        else {
+
+          // int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
+  
+          // if (midDist >= Model.NUMBER_OF_ROWS / 4){
+          //   for (int k = 0; k < 8; k++){
+          //     int adjx = this.row + dRow[k];
+          //     int adjy = this.column + dCol[k];
+  
+          //     int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
+              
+          //     if (distanceToMid < midDist && canMove(k)){
+          //       curDir = k;
+          //       midDist = distanceToMid;
+          //     }
+  
+  
+          //   }
+  
+          // }
+        }
+
 
         // System.out.println(curDir);
 
