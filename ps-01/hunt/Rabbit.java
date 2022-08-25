@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.midi.Track;
 
 public class Rabbit extends Animal {
 
+    private int turnNotSeeFox;
 
     public Rabbit(Model model, int row, int column) {
         super(model, row, column);
@@ -17,121 +17,27 @@ public class Rabbit extends Animal {
         int dRow[] = { -1, -1, 0, 1, 1, 1, 0, 1};
         int dCol[] = { 0, 1, 1, 1, 0, -1, -1, -1};
 
-        boolean seenFox = false;
-        int dir = -1;
+        int diagDir[] = {7,5,3,1};
 
-        for (int i = Model.MIN_DIRECTION; i <= Model.MAX_DIRECTION; i++){
+        for (int i = Model.MIN_DIRECTION; i <= Model.MAX_DIRECTION; i++) {
 
             if (look(i) == Model.FOX) {
 
-                seenFox = true;
-                dir = i;
-            }
-        }
+                for (int d : diagDir) {
 
-        if (seenFox) {
-            int[] foxLoc = calcFoxCoord(this.row, this.column, distance(dir), dir);
-
-            int curDist = distance(dir);
-            int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-
-            if (curDist <= 2){
-              
-              if (canMove(Model.turn(dir, 3))){
-                return Model.turn(dir, 3);
-              }
-
-              else if (canMove(Model.turn(dir, 5))) {
-                return Model.turn(dir, 5);
-              }
-              else {
-
-                for (int i = 0; i < 8; i++) {
-                  
-                  if (i == dir){
-                    continue;
-                  }
-
-                  if (canMove(i)){
-                    return i;
-                  }
-                }
-              }
-
-            }
-
-            for (int j = 0; j < 8; j++) {
-                int adjx = this.row + dRow[j];
-                int adjy = this.column + dCol[j];
-
-                if (adjx == foxLoc[0] && adjy == foxLoc[1]){
-                    continue;
-                }
-
-                for (int k = 0; k < 8; k++){
-                    int foxX = foxLoc[0] + dRow[k];
-                    int foxY = foxLoc[1] + dCol[k];
-
-                    if (foxX == adjx && foxY == adjy) {
-                        break;
-                    }
-                    else {
-                        int distance = calcDist(foxLoc[0], foxLoc[1], adjx, adjy);
-
-                        if (midDist >= (Model.NUMBER_OF_ROWS / 4)){
-
-                          int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-
-
-                          if (distance >= curDist && canMove(j) && distanceToMid < midDist) {
-                            curDist = distance;
-                            curDir = j;
-                            midDist = distanceToMid;
-                          }
-
-                        }
-
-                        else {
-
-                          if (distance > curDist && canMove(j)) {
-                              curDist = distance;
-                              curDir = j;
-                          }
-                        }
-
-
+                    if (canMove(Model.turn(i, d))) {
+                        return Model.turn(i, d);
                     }
 
                 }
 
-                
             }
-
-        }
-        else {
-
-          // int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-  
-          // if (midDist >= Model.NUMBER_OF_ROWS / 4){
-          //   for (int k = 0; k < 8; k++){
-          //     int adjx = this.row + dRow[k];
-          //     int adjy = this.column + dCol[k];
-  
-          //     int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-              
-          //     if (distanceToMid < midDist && canMove(k)){
-          //       curDir = k;
-          //       midDist = distanceToMid;
-          //     }
-  
-  
-          //   }
-  
-          // }
         }
 
+        
 
-        // System.out.println(curDir);
+        
+        // System.out.println(turnNotSeeFox);
 
         return curDir;
     }
