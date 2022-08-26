@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class Grader {
 
-    static final int NUMBER_OF_TRIALS = 300;
+    static final int NUMBER_OF_TRIALS = 30000;
     
     // class variables
     private static Object[][] field;
