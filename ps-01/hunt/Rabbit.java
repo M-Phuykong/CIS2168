@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.midi.Track;
 
 public class Rabbit extends Animal {
 
+    private int turnNotSeeFox;
 
     public Rabbit(Model model, int row, int column) {
         super(model, row, column);
@@ -21,11 +21,14 @@ public class Rabbit extends Animal {
         int dir = -1;
 
         for (int i = Model.MIN_DIRECTION; i <= Model.MAX_DIRECTION; i++){
-
             if (look(i) == Model.FOX) {
-
                 seenFox = true;
                 dir = i;
+            }
+            else if (look(i) == Model.EDGE){
+                if (distance(i) < closestEdgeDistance){
+                    closestEdgeDistance = distance(i);
+                }
             }
         }
 
@@ -34,30 +37,26 @@ public class Rabbit extends Animal {
 
             int curDist = distance(dir);
             int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-
-            if (curDist <= 2){
-              
+            int minMidDist = midDist;
+            // Fox is only 3 grid near
+            //
+            if (curDist <= 3){
               if (canMove(Model.turn(dir, 3))){
                 return Model.turn(dir, 3);
               }
-
               else if (canMove(Model.turn(dir, 5))) {
                 return Model.turn(dir, 5);
               }
               else {
-
                 for (int i = 0; i < 8; i++) {
-                  
                   if (i == dir){
                     continue;
                   }
-
                   if (canMove(i)){
                     return i;
                   }
                 }
               }
-
             }
 
             for (int j = 0; j < 8; j++) {
