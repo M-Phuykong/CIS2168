@@ -1,6 +1,7 @@
-public class Rabbit extends Animal {
+import java.util.ArrayList;
+import java.util.List;
 
-    private int notSeeFox;
+public class Rabbit extends Animal {
 
     public Rabbit(Model model, int row, int column) {
         super(model, row, column);
@@ -16,6 +17,7 @@ public class Rabbit extends Animal {
         int closestEdgeDistance = Model.NUMBER_OF_ROWS + 1;
         int foxDirection = -1;
         int closestEdgeDir = -1;
+
 
         // check all direction
         //
