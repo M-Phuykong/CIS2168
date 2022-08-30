@@ -24,11 +24,16 @@ public class main {
         List<Integer> list4 = new ArrayList<Integer>(
                 Arrays.asList(1, 2, 4,1));
         String test = "Hello, World! aldkfj,!adf ";
-
+        List<Integer> list5 = new ArrayList<Integer>(
+                Arrays.asList(1, 4, 5, 6, 5, 5, 2));
         // System.out.println(ArrayListHW.allMultiples(list, 5));
         // System.out.println(ArrayListHW.allStringsOfSize(list1, 3));
         // System.out.println(ArrayListHW.isPermutation(list3, list4));
-        System.out.println(ArrayListHW.stringToListOfWords(test));
+        // System.out.println(ArrayListHW.stringToListOfWords(test));
+        System.out.println(list1);
+        ArrayListHW.removeAllInstances(list1, "eat");
+        System.out.println(list1);
+        
     }
 
 }

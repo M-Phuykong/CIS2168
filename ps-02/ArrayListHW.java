@@ -71,17 +71,16 @@ public class ArrayListHW {
     public static List<String> stringToListOfWords(String words) {
         
         List<String> res = new ArrayList<String>(Arrays.asList(words.split(" ")));      
-        
         for (int i = 0; i < res.size(); i++){
             res.set(i, res.get(i).replaceAll("\\p{Punct}", ""));
         }
-
         return res;
     }
 
-    // TODO:
-    public static void removeAllInstances(List<Integer> list, Object item) {
-
+    // DONE
+    public static <E> void removeAllInstances(List<E> list, Object item) {
+        list.removeAll(new ArrayList<Object>(
+                Arrays.asList(item)));
     }
 
 }
