@@ -1,9 +1,3 @@
-// import java.util.List;
-// import java.util.ArrayList;
-// import java.util.Collections;
-// import java.util.HashMap;
-// import java.util.HashSet;
-// import java.util.Set;
 
 import java.util.*;
 
@@ -16,24 +10,14 @@ public class ArrayListHW {
 
     // DONE
     public static List<Integer> allMultiples(List<Integer> list, int n) {
-        List<Integer> res = new ArrayList<Integer>();
-        for (int num: list) {
-            if (num % n == 0){
-                res.add(num);
-            }
-        }
-        return res;
+        list.removeIf(num -> (num % n != 0));
+        return list;
     }
 
     // DONE
     public static List<String> allStringsOfSize(List<String> list, int length) {
-        List<String> res = new ArrayList<String>();
-        for (String word : list) {
-            if (word.length() == length){
-                res.add(word);
-            }
-        }
-        return res;
+        list.removeIf(word -> (word.length() != length));
+        return list;
     }
 
     // DONE?
@@ -67,7 +51,7 @@ public class ArrayListHW {
         return true;
     }
 
-    // DONE?
+    // DONE
     public static List<String> stringToListOfWords(String words) {
         
         List<String> res = new ArrayList<String>(Arrays.asList(words.split(" ")));      
