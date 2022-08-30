@@ -1,183 +1,79 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.midi.Track;
-
 public class Rabbit extends Animal {
-
 
     public Rabbit(Model model, int row, int column) {
         super(model, row, column);
     }
     
     int decideMove() {
-
+        
+        // local variable
+        //
+        boolean seeFox = false;
+        int[] diagonalMove = {5,3,6,2,7,1};
         int curDir = Model.STAY;
+        int closestEdgeDistance = Model.NUMBER_OF_ROWS + 1;
+        int foxDirection = -1;
+        int closestEdgeDir = -1;
 
-        int dRow[] = { -1, -1, 0, 1, 1, 1, 0, 1};
-        int dCol[] = { 0, 1, 1, 1, 0, -1, -1, -1};
 
-        boolean seenFox = false;
-        int dir = -1;
-
-        for (int i = Model.MIN_DIRECTION; i <= Model.MAX_DIRECTION; i++){
-
-            if (look(i) == Model.FOX) {
-
-                seenFox = true;
-                dir = i;
+        // check all direction
+        //
+        for (int dir = Model.MIN_DIRECTION; dir <= Model.MAX_DIRECTION; dir++){
+            if (look(dir) == Model.FOX){
+                notSeeFox = 0;
+                foxDirection = dir;
+                seeFox = true;
             }
-        }
-
-        if (seenFox) {
-            int[] foxLoc = calcFoxCoord(this.row, this.column, distance(dir), dir);
-
-            int curDist = distance(dir);
-            int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-
-            if (curDist <= 2){
-              
-              if (canMove(Model.turn(dir, 3))){
-                return Model.turn(dir, 3);
-              }
-
-              else if (canMove(Model.turn(dir, 5))) {
-                return Model.turn(dir, 5);
-              }
-              else {
-
-                for (int i = 0; i < 8; i++) {
-                  
-                  if (i == dir){
-                    continue;
-                  }
-
-                  if (canMove(i)){
-                    return i;
-                  }
-                }
-              }
-
-            }
-
-            for (int j = 0; j < 8; j++) {
-                int adjx = this.row + dRow[j];
-                int adjy = this.column + dCol[j];
-
-                if (adjx == foxLoc[0] && adjy == foxLoc[1]){
-                    continue;
-                }
-
-                for (int k = 0; k < 8; k++){
-                    int foxX = foxLoc[0] + dRow[k];
-                    int foxY = foxLoc[1] + dCol[k];
-
-                    if (foxX == adjx && foxY == adjy) {
-                        break;
-                    }
-                    else {
-                        int distance = calcDist(foxLoc[0], foxLoc[1], adjx, adjy);
-
-                        if (midDist >= (Model.NUMBER_OF_ROWS / 4)){
-
-                          int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-
-
-                          if (distance >= curDist && canMove(j) && distanceToMid < midDist) {
-                            curDist = distance;
-                            curDir = j;
-                            midDist = distanceToMid;
-                          }
-
-                        }
-
-                        else {
-
-                          if (distance > curDist && canMove(j)) {
-                              curDist = distance;
-                              curDir = j;
-                          }
-                        }
-
-
-                    }
-
-                }
-
+            else if (look(dir) == Model.EDGE) {
                 
+                // find the closest edge direction
+                //
+                if (distance(dir) <= closestEdgeDistance){
+                    closestEdgeDistance = distance(dir);
+                    closestEdgeDir = dir;
+                }
+            }
+        
+        }
+        
+        // Move the rabbit if the fox is in it sight
+        //
+        if (seeFox) {
+            notSeeFox = 0;
+            for (int i : diagonalMove) {
+                if (canMove(Model.turn(foxDirection, i))) {
+                    return Model.turn(foxDirection, i);
+                }
             }
 
         }
         else {
 
-          // int midDist = calcDist(this.row, this.column, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-  
-          // if (midDist >= Model.NUMBER_OF_ROWS / 4){
-          //   for (int k = 0; k < 8; k++){
-          //     int adjx = this.row + dRow[k];
-          //     int adjy = this.column + dCol[k];
-  
-          //     int distanceToMid = calcDist(adjx, adjy, Model.NUMBER_OF_ROWS / 2, Model.NUMBER_OF_COLUMNS / 2);
-              
-          //     if (distanceToMid < midDist && canMove(k)){
-          //       curDir = k;
-          //       midDist = distanceToMid;
-          //     }
-  
-  
-          //   }
-  
-          // }
+            // Increase the turn if the rabbit does not see the fox
+            //
+            notSeeFox++;
+
+            // After 15 moves, start moving the opposite the direction of
+            // the closest edge direction
+            //
+            if (notSeeFox == 15) {
+                notSeeFox = 0;
+                for (int i = 0; i < 8; i++){
+                    if (canMove(Model.turn(closestEdgeDir, 4))) {
+                        return Model.turn(closestEdgeDir, 4);
+                    }
+                    else {
+                        closestEdgeDir++;
+                    }
+                }
+                
+            }
         }
-
-
-        // System.out.println(curDir);
 
         return curDir;
     }
 
-    int calcDist(int foxRow, int foxCol, int RabitRow, int RabitCol) {
-
-        double distance = Math.hypot(foxRow - RabitRow, foxCol - RabitCol);
-
-        int res = (int) Math.ceil(distance);
-
-        return res;
-    }
-
-
-    int[] calcFoxCoord(int RabitRow, int RabitCol, int distance, int dir) {
-
-        int[] coord = new int[2];
-        
-        // Should change to switch
-        //
-        if (dir == 0) {
-            coord[0] = RabitRow - distance;
-            coord[1] = RabitCol;
-        }
-        else if (dir == 2) {
-            coord[0] = RabitRow;
-            coord[1] = RabitCol + distance;
-        } 
-        else if (dir == 4){
-            coord[0] = RabitRow + distance;
-            coord[1] = RabitCol;
-        }
-        else if (dir == 6) {
-            coord[0] = RabitRow;
-            coord[1] = RabitCol - distance;
-        } 
-
-        else if (dir == 1 || dir == 7){
-            coord[0] = RabitRow - distance;
-            coord[1] = RabitCol - distance;
-        } 
-        else {
-            coord[0] = RabitRow + distance;
-            coord[1] = RabitCol + distance;
-        }
-
-        return coord;
-    }
 }
