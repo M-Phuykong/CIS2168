@@ -63,6 +63,8 @@ public class ArrayListHW {
 
     // DONE
     public static <E> void removeAllInstances(List<E> list, Object item) {
+
+        // Or remove backward
         list.removeAll(new ArrayList<Object>(
                 Arrays.asList(item)));
     }
