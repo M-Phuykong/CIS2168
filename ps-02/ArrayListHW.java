@@ -16,8 +16,13 @@ public class ArrayListHW {
         // filter the list by modding the number by n;
         // if there's a remainder then it is not a multiple of n
         //
-        list.removeIf(num -> (num % n != 0));
-        return list;
+        List<Integer> res = new ArrayList<Integer>();
+        for (int num : list) {
+            if (num % n == 0) {
+                res.add(num);
+            }
+        }
+        return res;
     }
 
     public static List<String> allStringsOfSize(List<String> list, int length) {
@@ -25,8 +30,13 @@ public class ArrayListHW {
         // filter the list and just look for the lenght of each word
         // by using the lenght() method
         //
-        list.removeIf(word -> (word.length() != length));
-        return list;
+        List<String> res = new ArrayList<String>();
+        for (String word : list) {
+            if ( word.length() == length) {
+                res.add(word);
+            }
+        }
+        return res;
     }
 
     public static <E> boolean isPermutation(List<E> list1, List<E> list2) {
