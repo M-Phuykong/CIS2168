@@ -31,6 +31,10 @@ public class ArrayListHW {
 
     public static <E> boolean isPermutation(List<E> list1, List<E> list2) {
 
+        if (list1.size() != list2.size()){
+            return false;
+        }
+
         // Use a hashmap to keep track of the frequency in the list
         //
         Map<E, Integer> hashmap = new HashMap<E, Integer>();
@@ -88,7 +92,7 @@ public class ArrayListHW {
         
         // split the list
         //
-        List<String> res = new ArrayList<String>(Arrays.asList(words.split(" ")));      
+        List<String> res = new ArrayList<String>(Arrays.asList(words.split(" \\s+")));      
         
         // go through each word in the list and replace all special character
         //
@@ -102,8 +106,7 @@ public class ArrayListHW {
 
         // remove all the item from the list
         //
-        list.removeAll(new ArrayList<Object>(
-                Arrays.asList(item)));
+        list.removeAll(Arrays.asList(item));
     }
     
 
