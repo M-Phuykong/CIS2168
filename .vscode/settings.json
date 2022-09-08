@@ -1,0 +1,7 @@
+{
+    "java.project.sourcePaths": [
+        "ps-02",
+        "ps-01/hunt",
+        "ps-04/Josephus Problem"
+    ]
+}

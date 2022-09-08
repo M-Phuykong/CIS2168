@@ -20,6 +20,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 
 		while (index > 0) {
 			this.head = this.head.next;
+			index --;
 		}
 
 		return this.head;
@@ -29,7 +30,6 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	public boolean add(E item) {
 		this.add(size,item);
 		return false;
-
 	}
 	
 	// Cases to handle
@@ -47,16 +47,10 @@ public class CircularLinkedList<E> implements Iterable<E> {
 
 		Node<E> toAdd = new Node(item);
 
-		if (index == 0){
-			toAdd.next = this.head;
-			this.head = toAdd;
-		} 
-		else {
-			
-			Node<E> cur = this.getNode(index - 1);
-			cur.next = item;
-			item.next = this.getNode(index + 1);
-
+		if (index == size){
+			tail.next = toAdd;
+			tail = toAdd;
+			tail.next = head;
 		}
 
 		size++;
@@ -167,10 +161,15 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	
 	public static void main(String[] args){
 		
-		
-		
-		
-		
+		CircularLinkedList<Integer> test = new CircularLinkedList<Integer>();
+
+		test.add(1);
+		// test.add(2);
+		// test.add(3);
+		// test.add(4);
+		// test.add(5);
+
+		System.out.println(test.toString());
 		
 	}
 
