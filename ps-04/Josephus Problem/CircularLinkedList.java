@@ -90,13 +90,10 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	// REMEMBER TO DECREMENT THE SIZE
 	public E remove(int index) {
 
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException("Index is out of bound");
-		}
-
 		E toReturn = null;
 
 		if (size == 1){
+			toReturn = head.item;
 			head = null;
 			tail = null;
 		}
@@ -111,14 +108,14 @@ public class CircularLinkedList<E> implements Iterable<E> {
 			tail.next = head;
 		}
 		else{
-			Node<E> curPos = getNode(index - 1);
-			Node<E> before = getNode(index - 2);
-
-			toReturn = curPos.item;
+			Node<E> before = getNode(index - 1);
+			toReturn = before.next.item;
 			
-			before.next = curPos.next;
-
+			before.next = before.next.next;
 		}
+
+		size--;
+
 		return toReturn;
 	}
 
@@ -222,21 +219,17 @@ public class CircularLinkedList<E> implements Iterable<E> {
 		test.add(3);
 		test.add(4);
 		test.add(5);
-		test.add(1,9);
-		System.out.println(test.toString());
 
-		System.out.println(test.remove(3));
-		// test.remove(0);
+		Iterator iter = test.iterator();
+		int size = test.size;
 
-		// Iterator iter = test.iterator();
-		
-		// System.out.println(iter.next());
-		// System.out.println(iter.next());
-
-
-
-
-		System.out.println(test.toString());
+		for (int i = 0; i < size; i++){
+			System.out.println(test.toString());
+			for (int j = 0; j < 2 ; j++){
+				iter.next();
+			}
+			iter.remove();
+		}
 
 	}
 
