@@ -1,4 +1,3 @@
-import org.w3c.dom.Node;
 
 public class SolitaireEncryption {
 
@@ -31,7 +30,9 @@ public class SolitaireEncryption {
         int jokerA_index = deck.get_index(jokerA_val);
         // System.out.println(jokerA_index);
         // deck.swap(jokerA_index, jokerA_index + 1);
-        deck.swap(1,5 );
+        // deck.swap(1,5 );
+        deck.remove(0);
+        deck.add(0, 69);
         
         
 

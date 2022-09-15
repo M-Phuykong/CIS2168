@@ -33,7 +33,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 		
 		// this.remove(index_a - 1);
 		// this.add(index_a - 1, node2.item);
-		this.add(0, 99);
+		// this.add(5, );
 
 		// this.remove(index_b - 1);
 		// this.add(index_b - 1, node1.item);
@@ -104,6 +104,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 		else if(index == 0) {
 			toAdd.next = head;
 			head = toAdd;
+			tail.next = head;
 		} 
 		else if (index == size - 1){
 
