@@ -1,4 +1,3 @@
-package circularlinkedlist;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -14,6 +13,49 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	public CircularLinkedList() {
 
 	}
+	// NEW PUBLIC METHOD FOR THE SOLITAIRE ENCRYPTION
+	public int get_index(E value) {
+
+		int res = 1;
+		Node<E> tmp = head;
+
+		while (tmp.item != value) {
+			tmp = tmp.next;
+			res++;
+		}
+		
+		return res;
+	}
+
+	public boolean swap(int index_a, int index_b){
+		Node<E> node1 = this.getNode(index_a - 1);
+		Node<E> node2 = this.getNode(index_b - 1);
+		
+		// this.remove(index_a - 1);
+		// this.add(index_a - 1, node2.item);
+		this.add(0, 99);
+
+		// this.remove(index_b - 1);
+		// this.add(index_b - 1, node1.item);
+		
+		// Node<E> node1_prev = this.getNode(index_a - 2);
+		// Node<E> node2_prev = this.getNode(index_b - 2);
+		// Node<E> node1 = this.getNode(index_a - 1);
+		// Node<E> node2 = this.getNode(index_b - 1);
+		// Node<E> tmp = node2.next;
+
+		// node1_prev.next = node2;
+		// node2.next = node1.next;
+		// node1.next = tmp;
+		// node2_prev.next = node1;
+
+		System.out.println(node1.item);
+		System.out.println(node2.item);
+		
+		return true;
+	}
+
+	//
 
 	// I highly recommend using this helper method
 	// Return Node<E> found at the specified index
@@ -59,12 +101,11 @@ public class CircularLinkedList<E> implements Iterable<E> {
 			tail = toAdd;
 			tail.next = head;
 		} 
-		else if( index == 0 ) {
-
+		else if(index == 0) {
 			toAdd.next = head;
 			head = toAdd;
 		} 
-		else if (index == size){
+		else if (index == size - 1){
 
 			tail.next = toAdd;
 			tail = toAdd;
@@ -102,13 +143,13 @@ public class CircularLinkedList<E> implements Iterable<E> {
 			head = head.next;
 			tail.next = head;		
 		}
-		else if (index == size) {
+		else if (index == size - 1) {
 			toReturn = tail.item;
-			tail = getNode(index - 2);
+			tail = getNode(index - 1);
 			tail.next = head;
 		}
 		else{
-			Node<E> before = getNode(index - 1);
+			Node<E> before = getNode(index);
 			toReturn = before.next.item;
 			
 			before.next = before.next.next;
@@ -211,25 +252,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	}
 
 	public static void main(String[] args){
-
-		CircularLinkedList<Integer> test = new CircularLinkedList<Integer>();
-
-		test.add(1);
-		test.add(2);
-		test.add(3);
-		test.add(4);
-		test.add(5);
-
-		Iterator iter = test.iterator();
-		int size = test.size;
-
-		for (int i = 0; i < size; i++){
-			System.out.println(test.toString());
-			for (int j = 0; j < 2 ; j++){
-				iter.next();
-			}
-			iter.remove();
-		}
+		// CircularLinkedList<Integer> test = new CircularLinkedList<Integer>();
 
 	}
 
