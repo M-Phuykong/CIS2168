@@ -1,8 +1,9 @@
+import java.util.Iterator;
 
 public class SolitaireEncryption {
 
-    static int jokerA_val = 27;
-    static int jokerB_val = 28;
+    final static int jokerA_val = 27;
+    final static int jokerB_val = 28;
 
     public static char encryptChar(char letter, int key) {
         int value =   letter - 'a';
@@ -28,20 +29,60 @@ public class SolitaireEncryption {
     private static void step1(CircularLinkedList<Integer> deck){
         
         int jokerA_index = deck.get_index(jokerA_val);
-        // System.out.println(jokerA_index);
-        // deck.swap(jokerA_index, jokerA_index + 1);
-        // deck.swap(1,5 );
-        deck.remove(0);
-        deck.add(0, 69);
-        
-        
-
+        deck.shift(jokerA_index, 1);
     }
 
     private static void step2(CircularLinkedList<Integer> deck){
 
+        int jokerB_index = deck.get_index(jokerB_val);
+        deck.shift(jokerB_index, 2);
     }
+
     private static void step3(CircularLinkedList<Integer> deck){
+
+        CircularLinkedList<Integer> top_deck = new CircularLinkedList<>();
+        CircularLinkedList<Integer> middle_deck = new CircularLinkedList<>();
+        CircularLinkedList<Integer> bottom_deck = new CircularLinkedList<>();
+
+        boolean found_top = false;
+        boolean found_bottom = false;
+
+        Iterator iter = deck.iterator();
+        for (int i = 0; i < deck.size; i++) {
+            int value = (int)iter.next();
+
+            if (value == jokerA_val || value == jokerB_val){
+                if (!found_top && !found_bottom){
+
+                    found_top = true;
+                }
+                else if (found_top && !found_bottom) {
+                    found_bottom = true;
+                }
+
+                middle_deck.add(value);
+            }
+            else {
+                if (!found_top && !found_bottom) {
+
+                    top_deck.add(value);
+
+                } else if (found_top && !found_bottom) {
+                    middle_deck.add(value);
+                }
+                else if (found_top && found_bottom) {
+                    bottom_deck.add(value);
+                }
+
+            }
+
+        }
+
+        // middle_deck.tail.next = top_deck;
+
+        System.out.println(top_deck.toString());
+        System.out.println(middle_deck.toString());
+        System.out.println(bottom_deck.toString());
 
     }
     private static void step4(CircularLinkedList<Integer> deck){
@@ -81,10 +122,20 @@ public class SolitaireEncryption {
         deck.add(20);
         deck.add(23);
         deck.add(26);
-        System.out.println(deck.toString());
+        // deck.add(1);
+        // deck.add(2);
+        // deck.add(27);
+        // deck.add(3);
+        // deck.add(4);
+        // deck.add(5);
 
+        // System.out.println(deck.toString());
         step1(deck);
+        // System.out.println(deck.toString());
+        step2(deck);
         System.out.println(deck.toString());
+        step3(deck);
+
         // System.out.println(deck.size);
 
 

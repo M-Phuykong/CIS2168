@@ -16,7 +16,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	// NEW PUBLIC METHOD FOR THE SOLITAIRE ENCRYPTION
 	public int get_index(E value) {
 
-		int res = 1;
+		int res = 0;
 		Node<E> tmp = head;
 
 		while (tmp.item != value) {
@@ -27,31 +27,18 @@ public class CircularLinkedList<E> implements Iterable<E> {
 		return res;
 	}
 
-	public boolean swap(int index_a, int index_b){
-		Node<E> node1 = this.getNode(index_a - 1);
-		Node<E> node2 = this.getNode(index_b - 1);
-		
-		// this.remove(index_a - 1);
-		// this.add(index_a - 1, node2.item);
-		// this.add(5, );
+	public boolean shift(int index, int value){
+		Node<E> node1 = this.getNode(index);
+		value = value % size;
 
-		// this.remove(index_b - 1);
-		// this.add(index_b - 1, node1.item);
-		
-		// Node<E> node1_prev = this.getNode(index_a - 2);
-		// Node<E> node2_prev = this.getNode(index_b - 2);
-		// Node<E> node1 = this.getNode(index_a - 1);
-		// Node<E> node2 = this.getNode(index_b - 1);
-		// Node<E> tmp = node2.next;
+		if (index == size - 1){
+			this.add((index + value) % size, node1.item);
+			this.remove(size);
+		} else {
+			this.remove(index);
+			this.add((index + value) % size, node1.item);
+		}
 
-		// node1_prev.next = node2;
-		// node2.next = node1.next;
-		// node1.next = tmp;
-		// node2_prev.next = node1;
-
-		System.out.println(node1.item);
-		System.out.println(node2.item);
-		
 		return true;
 	}
 
@@ -106,7 +93,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 			head = toAdd;
 			tail.next = head;
 		} 
-		else if (index == size - 1){
+		else if (index == size){
 
 			tail.next = toAdd;
 			tail = toAdd;
@@ -144,13 +131,13 @@ public class CircularLinkedList<E> implements Iterable<E> {
 			head = head.next;
 			tail.next = head;		
 		}
-		else if (index == size - 1) {
+		else if (index == size) {
 			toReturn = tail.item;
-			tail = getNode(index - 1);
+			tail = getNode(index - 2);
 			tail.next = head;
 		}
 		else{
-			Node<E> before = getNode(index);
+			Node<E> before = getNode(index - 1);
 			toReturn = before.next.item;
 			
 			before.next = before.next.next;
