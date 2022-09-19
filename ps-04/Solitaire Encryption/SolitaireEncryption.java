@@ -1,4 +1,4 @@
-import java.util.Iterator;
+import java.util.*;
 
 public class SolitaireEncryption {
 
@@ -22,8 +22,39 @@ public class SolitaireEncryption {
         return decryptedChar;
     }
 
-    public int getKey(CircularLinkedList<Integer> deck){ // calls the steps methods
-        return -1;
+    public static String sanitize(String word) {
+
+        int roundedLength = roundToPower5(word.length());
+
+        word =  word.replaceAll("[^a-zA-Z]+", "")
+                    .trim()            
+                    .toLowerCase();
+
+        for (int i = word.length(); i < roundedLength; i++){
+            word += "x";
+        }
+
+        return word;
+    }
+
+
+    public static int getKey(CircularLinkedList<Integer> deck){ // calls the steps methods
+        
+        int key = 0;
+
+        do {
+            step1(deck);
+            step2(deck);
+            step3(deck);
+            step4(deck);
+            key = step5(deck);
+        } while (key == jokerA_val || key == jokerB_val);
+        
+        return key;
+    }
+
+    private static int roundToPower5(int number){
+        return 5 * (int)Math.ceil(number/5);
     }
 
     private static void step1(CircularLinkedList<Integer> deck){
@@ -48,7 +79,8 @@ public class SolitaireEncryption {
         boolean found_bottom = false;
 
         Iterator iter = deck.iterator();
-        for (int i = 0; i < deck.size; i++) {
+        int size = deck.size;
+        for (int i = 0; i < size; i++) {
             int value = (int)iter.next();
 
             if (value == jokerA_val || value == jokerB_val){
@@ -76,24 +108,44 @@ public class SolitaireEncryption {
 
             }
 
+            iter.remove();
+
+        }
+        Iterator top_iter = top_deck.iterator();
+        Iterator middle_iter = middle_deck.iterator();
+        Iterator bottom_iter = bottom_deck.iterator();
+
+        for (int i = 0 ; i < bottom_deck.size ; i++){
+            deck.add((int)bottom_iter.next());
+        }
+        for (int i = 0; i < middle_deck.size; i++) {
+            deck.add((int) middle_iter.next());
+        }
+        for (int i = 0; i < top_deck.size; i++) {
+            deck.add((int) top_iter.next());
         }
 
-        // middle_deck.tail.next = top_deck;
-
-        System.out.println(top_deck.toString());
-        System.out.println(middle_deck.toString());
-        System.out.println(bottom_deck.toString());
-
     }
+
     private static void step4(CircularLinkedList<Integer> deck){
 
+        int last_card = deck.get_value(deck.size - 1);
+
+        for (int i = last_card; i > 0; i--){
+            deck.shift(0, deck.size - 2);
+        }
     }
     private static int step5(CircularLinkedList<Integer> deck){
-        return -1;
+        
+        int top_card = deck.get_value(0);
+        // REMEMBER TO CHECK IF ITS A JOKER CARD OR NOT; IGNORE IF THERE IS A JOKER CARD
+        return deck.get_value(top_card);
     }
 
     public static void main(String[] args) {
         CircularLinkedList<Integer> deck = new CircularLinkedList<>();
+        ArrayList<Integer> key_stream = new ArrayList<Integer>();
+
         deck.add(1);
         deck.add(4);
         deck.add(7);
@@ -122,23 +174,41 @@ public class SolitaireEncryption {
         deck.add(20);
         deck.add(23);
         deck.add(26);
-        // deck.add(1);
-        // deck.add(2);
-        // deck.add(27);
-        // deck.add(3);
-        // deck.add(4);
-        // deck.add(5);
 
-        // System.out.println(deck.toString());
-        step1(deck);
-        // System.out.println(deck.toString());
-        step2(deck);
-        System.out.println(deck.toString());
-        step3(deck);
+        String test = "hello";
+        test = sanitize(test);
+        String encrypt_message = "";
+        
+        for (int i = 0; i < test.length(); i++) {
+            int key = getKey(deck);
+            key_stream.add(key);
+        }
+        System.out.println(key_stream.toString());
+        System.out.println(test);
+        for (int i = 0; i < test.length(); i++) {
+            // int ascii_char = (int)test.charAt(i) - 96;
+            char e_char = encryptChar(test.charAt(i), key_stream.get(i));
+            encrypt_message += e_char;
+        }
 
-        // System.out.println(deck.size);
+        System.out.println(encrypt_message);
 
+        // encoded: snisyvzcsl
+        // decoded: helloworld
 
+        // encoded: eqfzsrlelac
+        // decoded: thisisatest
 
+        // encoded: sxtkyhalzacksjqetcf
+        // decoded: howdoipassthisclass
+
+        // encoded: sruehwiiefgahol
+        // decoded: hixxxxxxxxxxxxx 
+
+        // encoded: lcqhmjlekifq
+        // decoded: attackatdawn
+
+        // encoded: aalmordzyfarcjsgqsswzvcojdilgdlfkadhdsh
+        // decoded: professorxrossenxifxyouxseexthisxhellox
     }
 }

@@ -15,22 +15,42 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	}
 	// NEW PUBLIC METHOD FOR THE SOLITAIRE ENCRYPTION
 	public int get_index(E value) {
-
 		int res = 0;
 		Node<E> tmp = head;
-
 		while (tmp.item != value) {
 			tmp = tmp.next;
 			res++;
 		}
-		
 		return res;
+	}
+	
+	public E get_value(int index) {
+
+		if (index > size) {
+			throw new IndexOutOfBoundsException("Can't get node with index larger than size");
+		}
+
+		Node<E> current = head;
+		while (index > 0) {
+			current = current.next;
+			index--;
+		}
+
+		return current.item;
 	}
 
 	public boolean shift(int index, int value){
+
+		if (value == 0) {
+			return true;
+		}
+		else if (value < 0){
+			throw new Error("Value can't be less 0");
+		}
+
 		Node<E> node1 = this.getNode(index);
 		value = value % size;
-
+		
 		if (index == size - 1){
 			this.add((index + value) % size, node1.item);
 			this.remove(size);
