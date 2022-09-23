@@ -7,7 +7,6 @@ public class Driver {
         String retry = "y";
         Scanner scan = new Scanner(System.in);
         CircularLinkedList<Integer> deck = new CircularLinkedList<>();
-        // ArrayList<Integer> key_stream = new ArrayList<Integer>(Arrays.asList(21,6,2,19,15,18,12,23,23,5,1,7,14,6,13,1,26,16,12,20));
 
         System.out.println("===================================================");
         System.out.println("== Welcome to the Solitaire Encryption Decrypter ==");
@@ -32,7 +31,6 @@ public class Driver {
             String decrypted_message = "";
             for (int i = 0; i < encrypted_message.length(); i++) {
                 int key = SolitaireEncryption.getKey(deck);
-                // int key = key_stream.get(i);
                 decrypted_message += SolitaireEncryption.decryptChar(encrypted_message.charAt(i), key);
             }
 
@@ -42,7 +40,7 @@ public class Driver {
             System.out.println("Decrypted Message: " + decrypted_message);
             System.out.println();
 
-            // try again
+            // Try again
             System.out.println("Would you like to decrypt another message? [y/n]");
             retry = scan.nextLine();
 

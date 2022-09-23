@@ -13,7 +13,8 @@ public class CircularLinkedList<E> implements Iterable<E> {
 	public CircularLinkedList() {
 
 	}
-	// NEW PUBLIC METHOD FOR THE SOLITAIRE ENCRYPTION
+	// New Public Method for the Solitaire Encryption
+	//
 	public int get_index(E value) {
 		int res = 0;
 		Node<E> tmp = head;
@@ -61,8 +62,6 @@ public class CircularLinkedList<E> implements Iterable<E> {
 
 		return true;
 	}
-
-	//
 
 	// I highly recommend using this helper method
 	// Return Node<E> found at the specified index
