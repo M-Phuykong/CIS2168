@@ -152,23 +152,14 @@ public class MazeGridPanel extends JPanel{
 		start.setBackground(Color.GREEN);
 	}
 
-
-
 	public boolean visited(int row, int col) {
 		Cell c = maze[row][col];
 		Color status = c.getBackground();
 		if(status.equals(Color.WHITE)  || status.equals(Color.RED)  ) {
 			return false;
 		}
-
-
 		return true;
-
-
 	}
-
-
-
 
 	public MazeGridPanel(int rows, int cols) {
 		this.setPreferredSize(new Dimension(800,800));
