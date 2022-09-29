@@ -1,7 +1,7 @@
 import java.util.HashSet;
 
 public class eightQueens {
-    
+    // 8 * 8 = 92 ways to arrange it
     final static int N = 8;
 
     int[][] board = {   {0, 0, 0, 0, 0, 0, 0, 0}, 
@@ -27,9 +27,6 @@ public class eightQueens {
         HashSet<Integer> posDiag = new HashSet<Integer>();
         HashSet<Integer> negDiag = new HashSet<Integer>();
         backtrack(0, column, posDiag, negDiag);
-
-
-
     }
 
 
