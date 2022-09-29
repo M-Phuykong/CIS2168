@@ -30,21 +30,38 @@ public class MazeGridPanel extends JPanel{
 
 		while (!stack.isEmpty()){
 
+			// pop the current node
+			//
 			Cell curLocation = stack.pop();
 			
+			// arraylist to store possible moveset
+			//
 			ArrayList<Integer> possible = new ArrayList<Integer>();
 			
+			// check all four direction and add any direction that we can move
+			//
 			if (curLocation.northWall && curLocation.row - 1 >= 0 &&!visited[curLocation.row - 1][curLocation.col]){ possible.add(0); }
 			if (curLocation.eastWall && curLocation.col + 1 < cols && !visited[curLocation.row][curLocation.col + 1]){ possible.add(1); }
 			if (curLocation.southWall && curLocation.row + 1 < rows && !visited[curLocation.row + 1][curLocation.col]){ possible.add(2); }
 			if (curLocation.westWall && curLocation.col - 1 >= 0 && !visited[curLocation.row][curLocation.col - 1]){ possible.add(3); }
 
+			// if we have at least one possible move
+			//
 			if (possible.size() > 0){
+				
+				// push the current one back to the stack
+				//
 				stack.push(curLocation);
+				
+				// randomly pick one direction from our possible choices
+				//
 				int dir = possible.get(random.nextInt(possible.size()));
 
 				Cell newLoc = maze[curLocation.row + xDir[dir]][curLocation.col + yDir[dir]];
 
+				// check to see which direction we took and remove
+				// the corresponding wall
+				//
 				if (dir == 0){
 					curLocation.northWall = false;
 					newLoc.southWall = false;
@@ -62,7 +79,12 @@ public class MazeGridPanel extends JPanel{
 					newLoc.eastWall = false;
 				}
 
+				// mark it as visit
+				//
 				visited[newLoc.row][newLoc.col] = true;
+				
+				// push it to the stack
+				//
 				stack.push(newLoc);
 			}
 			maze[curLocation.row][curLocation.col].repaint();
@@ -115,13 +137,19 @@ public class MazeGridPanel extends JPanel{
 		while (!stack.isEmpty()){
 
 			Cell curLocation = stack.peek();
-
+			
+			// exit the loop once we are at the end
+			//
 			if ( curLocation.row == finish.row && curLocation.col == finish.col) {
 				break;
 			}
-
+			
+			// Mark the tile as visited 
+			//
 			curLocation.setBackground(Color.YELLOW);
 
+			//check all possible path
+			//
 			if (!curLocation.northWall && !visited(curLocation.row - 1, curLocation.col)){
 				Cell toAdd = maze[curLocation.row - 1][curLocation.col];
 				stack.push(toAdd);
@@ -143,6 +171,8 @@ public class MazeGridPanel extends JPanel{
 			}
 			else{
 
+				// deadend, need to go back
+				//
 				curLocation.setBackground(Color.LIGHT_GRAY);
 				stack.pop();
 			}
