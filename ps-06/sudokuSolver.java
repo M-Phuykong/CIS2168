@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class sudokuSolver {
 
     int[][] board = {   {0, 0, 3, 0, 2, 0, 6, 0, 0}, 
@@ -13,6 +15,10 @@ public class sudokuSolver {
     public sudokuSolver() {}
 
     private void solve() {
+        System.out.println("solving...");
+        HashMap<Integer, Set<Integer>> grid = new HashMap<Integer, Set<Integer>>();
+        
+
         
     }
 
