@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class sudokuSolver {
+    
+    final static int N = 9;
 
     int[][] board = {   {0, 0, 3, 0, 2, 0, 6, 0, 0}, 
                         {9, 0, 0, 3, 0, 5, 0, 0, 1}, 
