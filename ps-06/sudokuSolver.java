@@ -13,11 +13,11 @@ public class sudokuSolver {
                         {0, 0, 5, 0, 1, 0, 3, 0, 0}   };
 
     public sudokuSolver() {}
-
+// https://stackoverflow.com/questions/15797446/how-do-i-add-values-to-a-set-inside-a-map
     private void solve() {
         System.out.println("solving...");
         HashMap<Integer, Set<Integer>> grid = new HashMap<Integer, Set<Integer>>();
-        
+
 
         
     }
