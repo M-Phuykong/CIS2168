@@ -1,10 +1,22 @@
 import java.io.*;
 import java.util.*;
 
+
 public class sudokuSolver {
     
+    public static int EulerNum;
+
     final static int N = 9;
-    
+    int[][] board = { { 0, 0, 3, 0, 2, 0, 6, 0, 0 },
+            { 9, 0, 0, 3, 0, 5, 0, 0, 1 },
+            { 0, 0, 1, 8, 0, 6, 4, 0, 0 },
+            { 0, 0, 8, 1, 0, 2, 9, 0, 0 },
+            { 7, 0, 0, 0, 0, 0, 0, 0, 8 },
+            { 0, 0, 6, 7, 0, 8, 2, 0, 0 },
+            { 0, 0, 2, 6, 0, 9, 5, 0, 0 },
+            { 8, 0, 0, 2, 0, 3, 0, 0, 9 },
+            { 0, 0, 5, 0, 1, 0, 3, 0, 0 } };
+            
     public sudokuSolver() {}
 
     private boolean solve(int[][] board, int pos){
@@ -17,6 +29,14 @@ public class sudokuSolver {
                 }
                 System.out.println();
             }
+            // System.out.print("Euler Number");
+            int tmp = 0;
+            for(int i = 0, j = 2; i < 3; i++, j--){
+                tmp += board[0][i] * (Math.pow(10, j));
+            }
+            EulerNum += tmp;
+            System.out.println();
+
             return true;
         }
 
@@ -119,6 +139,8 @@ public class sudokuSolver {
                 SS.solve(board, 0);
             }
         }
+
+        System.out.println("Total Euler Number " + EulerNum);
         sc.close();
     }
 }
