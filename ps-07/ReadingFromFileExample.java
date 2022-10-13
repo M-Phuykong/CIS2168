@@ -14,13 +14,12 @@ public class ReadingFromFileExample {
 			Scanner scanner = new Scanner(new File(fileName));
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
-				System.out.println(line);
-				//String[] words = line.split("\\s+");
-				//for(String word : words){
-				//	word = word.replaceAll(":", "");
-				//	word = word.replaceAll(",", "");
-				//	System.out.println(word);
-				//}
+				// System.out.println(line);
+				String[] words = line.split(" \\s+");
+				for(String word : words){
+					word = word.replaceAll("\\p{Punct}", "");
+					System.out.println(word);
+				}
 			}
 			scanner.close();
 			
