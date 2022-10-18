@@ -1,7 +1,5 @@
 package index;
 
-
-
 // Your class. Notice how it has no generics.
 // This is because we use generics when we have no idea what kind of data we are getting
 // Here we know we are getting two pieces of data:  a string and a line number
@@ -14,6 +12,9 @@ public class IndexTree {
 	
 	// Make your constructor
 	// It doesn't need to do anything
+	public IndexTree(){
+		this.root = null;
+	}
 	
 	// complete the methods below
 	
@@ -21,10 +22,8 @@ public class IndexTree {
 	// it takes in two pieces of data rather than one
 	// call your recursive add method
 	public void add(String word, int lineNumber){
-		
+		add(root, word, lineNumber);
 	}
-	
-	
 	
 	// your recursive method for add
 	// Think about how this is slightly different the the regular add method
@@ -32,16 +31,51 @@ public class IndexTree {
 	// you want to  add it to the IndexNode that already exists
 	// otherwise make a new indexNode
 	private IndexNode add(IndexNode root, String word, int lineNumber){
-		return null;
+
+		if (root == null) {
+			return new IndexNode(word, lineNumber);
+		}
+
+		int compare = word.compareTo(root.word);
+
+		if (compare == 0){
+			root.occurences++;
+			root.list.add(lineNumber);
+			return root;
+		}
+		else if (compare < 0){
+			root.left = add(root.left, word, lineNumber);
+			return root;
+		}
+		else {
+			root.right = add(root.right, word, lineNumber);
+			return root;
+		}
 	}
-	
-	
-	
 	
 	// returns true if the word is in the index
 	public boolean contains(String word){
-		return false;
+		return contains(root, word);
 	}
+
+	private boolean contains(IndexNode root, String word){
+		if (root == null){
+			return false;
+		}
+
+		int compare = root.word.compareTo(word);
+		
+		if (compare == 0){
+			return true;
+		}
+		else if (compare < 0){
+			return contains(root.left, word);
+		}
+		else {
+			return contains(root.right, word);
+		}
+	}
+
 	
 	// call your recursive method
 	// use book as guide
