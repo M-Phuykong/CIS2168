@@ -2,6 +2,8 @@ package index;
 
 import java.util.Scanner;
 import java.io.*;
+
+
 // Your class. Notice how it has no generics.
 // This is because we use generics when we have no idea what kind of data we are getting
 // Here we know we are getting two pieces of data:  a string and a line number
@@ -150,6 +152,8 @@ public class IndexTree {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException{
+		
+		String UTF8_BOM = "\uFEFF";
 		IndexTree index = new IndexTree();
 		String fileName = "pg100.txt";
 		int lineNum = 0;
@@ -163,9 +167,13 @@ public class IndexTree {
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
 				// System.out.println(line);
+				if (line.startsWith(UTF8_BOM)){
+					line = line.substring(1);
+				}
 				lineNum++;
-				String[] words = line.split("\\s+");
+				String[] words = line.trim().split("\\s+");
 				for(String word : words){
+					if (word.equals("")) continue;
 					word = word.replaceAll("\\p{Punct}", "");
 					index.add(word, lineNum);
 				}
@@ -177,8 +185,7 @@ public class IndexTree {
 		}
 
 		// print out the index
-		index.printIndex();
-		// System.out.println(index.toString());
+		// index.printIndex();
 
 		// test removing a word from the index
 
