@@ -1,5 +1,7 @@
 package index;
 
+import java.util.Scanner;
+import java.io.*;
 // Your class. Notice how it has no generics.
 // This is because we use generics when we have no idea what kind of data we are getting
 // Here we know we are getting two pieces of data:  a string and a line number
@@ -22,7 +24,7 @@ public class IndexTree {
 	// it takes in two pieces of data rather than one
 	// call your recursive add method
 	public void add(String word, int lineNumber){
-		add(root, word, lineNumber);
+		this.root = add(this.root, word, lineNumber);
 	}
 	
 	// your recursive method for add
@@ -80,13 +82,48 @@ public class IndexTree {
 	// call your recursive method
 	// use book as guide
 	public void delete(String word){
-		
+		this.root = delete(this.root, word);
 	}
 	
 	// your recursive case
 	// remove the word and all the entries for the word
 	// This should be no different than the regular technique.
 	private IndexNode delete(IndexNode root, String word){
+		
+		if (root == null){
+			return null;
+		}
+
+		int compare = word.compareTo(root.word);
+
+		if (compare == 0){
+			if (root.left == null && root.right == null){
+				return null;
+			} 
+			else if (root.left != null && root.right == null){
+				return root.left;
+			}
+			else{
+				IndexNode cur = root.left;
+				while (cur.right != null){
+					cur = cur.right;
+				}
+
+				root.word = cur.word;
+				root.occurences = cur.occurences;
+				root.list = cur.list;
+
+				delete(root.left, root.word);
+			}
+		}
+		else if (compare < 0){
+			root.left = delete(root.left, word);
+			return root;
+		}
+		else {
+			root.right = delete(root.right, word);
+			return root;
+		}
 		return null;
 	}
 	
@@ -96,16 +133,53 @@ public class IndexTree {
 	// this should print out each word followed by the number of occurrences and the list of all occurrences
 	// each word and its data gets its own line
 	public void printIndex(){
+		printIndex(this.root);
+	}
+
+	private IndexNode printIndex(IndexNode node){
 		
+		if (node == null){
+			return null;
+		}
+
+		printIndex(node.left);
+		System.out.println(node.toString());
+		printIndex(node.right);
+
+		return node;
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws FileNotFoundException, IOException{
 		IndexTree index = new IndexTree();
-		
+		String fileName = "pg100.txt";
+		int lineNum = 0;
+
+		// PrintStream out = new PrintStream(new File("print.txt"));
+		// System.setOut(out);
+
 		// add all the words to the tree
-		
+		try {
+			Scanner scanner = new Scanner(new File(fileName));
+			while(scanner.hasNextLine()){
+				String line = scanner.nextLine();
+				// System.out.println(line);
+				lineNum++;
+				String[] words = line.split("\\s+");
+				for(String word : words){
+					word = word.replaceAll("\\p{Punct}", "");
+					index.add(word, lineNum);
+				}
+			}
+			scanner.close();
+			
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
 		// print out the index
-		
+		index.printIndex();
+		// System.out.println(index.toString());
+
 		// test removing a word from the index
 
 		
