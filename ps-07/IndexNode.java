@@ -20,15 +20,16 @@ public class IndexNode  {
 	public IndexNode(String word, int line_num){
 		this.word = word;
 		this.occurences = 1;
-		this.list = new ArrayList<Integer>(line_num);
+		this.list = new ArrayList<Integer>(Arrays.asList(line_num));
 	}
 	// Complete This
 	// return the word, the number of occurrences, and the lines it appears on.
 	// string must be one line
 	
 	public String toString(){
+
 		return "Word: " + this.word + "\n"
 			+ "Occurences: " + this.occurences + "\n"
-			+ "Line Numbers: " + this.list.toString() + "\n";
+			+ "Line Numbers: " + this.list + "\n";
 	}
 }

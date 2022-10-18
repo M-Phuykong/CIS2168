@@ -16,9 +16,7 @@ public class IndexTree {
 	
 	// Make your constructor
 	// It doesn't need to do anything
-	public IndexTree(){
-		this.root = null;
-	}
+	public IndexTree(){}
 	
 	// complete the methods below
 	
@@ -59,7 +57,7 @@ public class IndexTree {
 	
 	// returns true if the word is in the index
 	public boolean contains(String word){
-		return contains(root, word);
+		return contains(this.root, word);
 	}
 
 	private boolean contains(IndexNode root, String word){
@@ -67,7 +65,7 @@ public class IndexTree {
 			return false;
 		}
 
-		int compare = root.word.compareTo(word);
+		int compare = word.compareTo(root.word);
 		
 		if (compare == 0){
 			return true;
@@ -104,6 +102,9 @@ public class IndexTree {
 			} 
 			else if (root.left != null && root.right == null){
 				return root.left;
+			}
+			else if (root.left == null && root.right != null){
+				return root.right;
 			}
 			else{
 				IndexNode cur = root.left;
@@ -153,28 +154,27 @@ public class IndexTree {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException{
 		
-		String UTF8_BOM = "\uFEFF";
+		String UTF8_BOM = "ï»¿";
 		IndexTree index = new IndexTree();
 		String fileName = "pg100.txt";
 		int lineNum = 0;
 
-		// PrintStream out = new PrintStream(new File("print.txt"));
-		// System.setOut(out);
+		PrintStream out = new PrintStream(new File("print.txt"));
+		System.setOut(out);
 
 		// add all the words to the tree
 		try {
 			Scanner scanner = new Scanner(new File(fileName));
 			while(scanner.hasNextLine()){
 				String line = scanner.nextLine();
-				// System.out.println(line);
 				if (line.startsWith(UTF8_BOM)){
-					line = line.substring(1);
+					line = line.substring(3);
 				}
 				lineNum++;
 				String[] words = line.trim().split("\\s+");
 				for(String word : words){
-					if (word.equals("")) continue;
 					word = word.replaceAll("\\p{Punct}", "");
+					if (word.equals("")) continue;
 					index.add(word, lineNum);
 				}
 			}
@@ -185,10 +185,9 @@ public class IndexTree {
 		}
 
 		// print out the index
-		// index.printIndex();
+		index.printIndex();
 
 		// test removing a word from the index
-
-		
+		index.delete("1");
 	}
 }
