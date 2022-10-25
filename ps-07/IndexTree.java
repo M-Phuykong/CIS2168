@@ -185,9 +185,11 @@ public class IndexTree {
 		}
 
 		// print out the index
-		index.printIndex();
+		// index.printIndex();
 
 		// test removing a word from the index
-		index.delete("1");
+		index.delete("zounds");
+
+		index.printIndex();
 	}
 }
