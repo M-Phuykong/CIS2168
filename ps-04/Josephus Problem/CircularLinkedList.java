@@ -51,6 +51,7 @@ public class CircularLinkedList<E> implements Iterable<E> {
 		if (index < 0 || index > size){
 			throw new IndexOutOfBoundsException("Index is out of bound");
 		}
+		
 
 		Node<E> toAdd = new Node(item);
 

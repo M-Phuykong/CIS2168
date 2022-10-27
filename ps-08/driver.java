@@ -60,14 +60,21 @@ public class driver {
 
         }
 
-        System.out.println(wordFamilies);
-
-
         return wordFamilies;
     }
 
     private static String getBestFamily(Map<String, List<String>> wordFamilies){
         String bestFamily = "";
+        int curMax = 0;
+
+        for (var entry: wordFamilies.entrySet()){
+            
+            if (entry.getValue().size() > curMax){
+                bestFamily = entry.getKey();
+                curMax = entry.getValue().size();
+            }
+        }
+
         return bestFamily;
     }
 
@@ -79,9 +86,9 @@ public class driver {
         String boardState = "";
         List<String> wordList;
         Scanner inp = new Scanner(System.in);
-
+        
         System.out.println("-----Welcome to Hangman----");
-
+        
         // Get Word Length
         System.out.println("Please Choose the Length of the Word:");
         do {
@@ -96,24 +103,37 @@ public class driver {
         for (int i = 0; i < chosenWordLength; i++) {
             boardState += "_";
         }
-
+        
         // Initial word list
         wordList = wordMapByLength.get(chosenWordLength);
+        long boardStateCount = chosenWordLength;
         
-        while (numOfTries > 0){
+        while (numOfTries > 0 && boardStateCount != 0){
             
             System.out.println("----- " + round + " -----");
-            System.out.println(boardState);
+            System.out.println("Word: " + boardState + "     " + "[" + wordList.size() + "]");
+            System.out.println("Number of Try Leftover: " + numOfTries);
+            System.out.println("Guessed Letters: " + userGuess.toString());
             
             do {
                 System.out.println("Please Guess Your Character");
                 guess = inp.next().charAt(0);
             } while (userGuess.contains(guess));
             
+            // add user guess to the universal set
             userGuess.add(guess);
             
+            // generate the word families
             Map<String, List<String>> wordFamilies = getWordFamilies(wordList);
+            
+            // get the best family state
             String newState = getBestFamily(wordFamilies);
+            
+            // update the word list
+            wordList = wordFamilies.get(newState);
+
+            // count the number of "_" of the new board state
+            boardStateCount = newState.chars().filter(ch -> ch == '_').count();
             
             if (!newState.equals(boardState)){
                 boardState = newState;
@@ -123,13 +143,25 @@ public class driver {
             }
             
             round++;
+            System.out.println();
         }
 
+        if (boardStateCount == 0){
+            System.out.println("----- " + round + " -----");
+            System.out.println("Word: " + boardState);
+            System.out.println("Number of Try Leftover: " + numOfTries);
+            System.out.println("Guessed Letters: " + userGuess.toString());
+
+            System.out.println("You Win!");
+        } else
+        {
+            System.out.println("Sorry, you ran out of guesses.");
+            System.out.println("The Word: " + wordList.get(0));
+        }
 
     }
 
     public static void main(String[] args) {
-        
         init();
         game();
     }
