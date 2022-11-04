@@ -20,7 +20,7 @@ function main(){
     console.log("hello world");
     var endTime = performance.now();
 
-    let list: Array<Number>;
+    let list: Array<Number> = [];
 
     for (let index = 0; index < 10; index++) {
         list.push(getRandomInt(20));
