@@ -18,7 +18,6 @@ public class test{
             }
         }
 
-
         return mostLetter;
     }
 
