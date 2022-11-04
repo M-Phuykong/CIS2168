@@ -1,10 +1,11 @@
 import java.util.*;
+import java.math.*;
 
 public class test{
 
     public static char mostCommonChar(String text){
         Map<Character, Integer> counts = new HashMap<>();
-        for (char c: text.toCharArray()){
+         (char c: text.toCharArray()){
             counts.put(c, counts.getOrDefault(c, 0) + 1);
         }
         int mostCount = 0;
@@ -20,6 +21,9 @@ public class test{
 
         return mostLetter;
     }
+
+
+
 
     public static void main(String[] args) {
         System.out.println(mostCommonChar("aabccd"));
