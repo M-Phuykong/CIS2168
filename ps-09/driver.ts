@@ -68,6 +68,7 @@ function main(){
     for (let index = 0; index < 10; index++) {
         list.push(getRandomInt(RAND_UPPER_LIMIT));
     }
+    
 
     console.log(list.toString())
     console.log(insertionSort(list.slice()).toString());
