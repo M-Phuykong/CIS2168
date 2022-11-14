@@ -88,9 +88,14 @@ class TimSort():
             element = self.list[i]
             j = i-1
             while element < self.list[j] and j >= left :
+                self.counter.compare += 1
+
                 self.list[j+1] = self.list[j]
+                self.counter.exchange += 1
+
                 j -= 1
             self.list[j+1] = element
+
         return self.list
 
     def merge(self, l, m, r): 
@@ -110,7 +115,8 @@ class TimSort():
         j=0
         k=l
 
-        while j < array_length2 and  i < array_length1: 
+        while j < array_length2 and  i < array_length1:
+
             if left[i] <= right[j]: 
                 self.list[k] = left[i] 
                 i += 1
@@ -120,6 +126,7 @@ class TimSort():
                 j += 1
                 
             k += 1
+            self.counter.compare += 1
 
         while i < array_length1: 
             self.list[k] = left[i] 
