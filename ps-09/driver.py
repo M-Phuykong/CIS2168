@@ -2,12 +2,6 @@ import random
 import time
 import matplotlib.pyplot as plt
 
-import shutil
-import matplotlib
-
-shutil.rmtree(matplotlib.get_cachedir())
-
-
 from textwrap import wrap
 from algorithm import InsertionSort, QuickSort, TimSort
 
