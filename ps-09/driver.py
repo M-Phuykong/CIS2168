@@ -22,6 +22,7 @@ def gen_graph(x, y, y_label, title, x_label_axis, y_label_axis, out_name):
     y_label_axis: label for the y-axis
     out_name: output file name that the graph will be save to
     """
+    plt.xkcd()
     fig, ax = plt.subplots()
 
     for y_val, y_lbl in zip(y,y_label):
@@ -103,56 +104,30 @@ def main():
         quickSort_DS.calc_average()
         timSort_DS.calc_average()
 
-    plt.xkcd()
-    fig, ax = plt.subplots()
 
-    ax.plot(r, insertSort_DS.time, label="Insertion Sort")
-    ax.plot(r, quickSort_DS.time, label="Quick Sort")
-    ax.plot(r, timSort_DS.time, label="Tim Sort")
+    gen_graph(r, 
+    [insertSort_DS.time, quickSort_DS.time, timSort_DS.time], 
+    ["Insertion Sort", "Quick Sort", "Tim Sort"],
+    "Performance of Sorting Algorithm (Averages per 100 iteration)",
+    "Sample Size (N)",
+    "Time (ms) Log Scale",
+    "time_comparison.png")
 
-    ax.set_xlabel("Sample Size (N)")
-    ax.set_ylabel("Time (ms) Log Scale")
-    ax.axes.autoscale()
-    ax.set_yscale('log')
-    
+    gen_graph(r, 
+    [insertSort_DS.exchange, quickSort_DS.exchange, timSort_DS.exchange], 
+    ["Insertion Sort", "Quick Sort", "Tim Sort"],
+    "Performance of Sorting Algorithm (Averages per 100 iteration)",
+    "Sample Size (N)",
+    "Exchange (Log Scale)",
+    "exchange_comparison.png")
 
-    ax.set_title("\n".join(wrap("Performance of Sorting Algorithm (Averages per 100 iteration) ", 40)))
-    ax.legend()
-
-    plt.savefig(f"time_comparison.png")
-
-    fig, ax = plt.subplots()
-
-    ax.plot(r, insertSort_DS.exchange, label="Insertion Sort")
-    ax.plot(r, quickSort_DS.exchange, label="Quick Sort")
-    ax.plot(r, timSort_DS.exchange, label="Tim Sort")
-
-    ax.set_xlabel("Sample Size (N)")
-    ax.set_ylabel("Exchange (Log Scale)")
-    ax.axes.autoscale()
-    ax.set_yscale('log')
-
-    ax.set_title("\n".join(wrap("Performance of Sorting Algorithm (Averages per 100 iteration) ", 40)))
-    ax.legend()
-
-    plt.savefig(f"exchange_comparison.png")
-
-
-    fig, ax = plt.subplots()
-
-    ax.plot(r, insertSort_DS.compare, label="Insertion Sort")
-    ax.plot(r, quickSort_DS.compare, label="Quick Sort")
-    ax.plot(r, timSort_DS.compare, label="Tim Sort")
-
-    ax.set_xlabel("Sample Size (N)")
-    ax.set_ylabel("Compare (Log Scale)")
-    ax.axes.autoscale()
-    ax.set_yscale('log')
-
-    ax.set_title("\n".join(wrap("Performance of Sorting Algorithm (Averages per 100 iteration) ", 40)))
-    ax.legend()
-
-    plt.savefig(f"compare_comparison.png")
+    gen_graph(r, 
+    [insertSort_DS.compare, quickSort_DS.compare, timSort_DS.compare], 
+    ["Insertion Sort", "Quick Sort", "Tim Sort"],
+    "Performance of Sorting Algorithm (Averages per 100 iteration)",
+    "Sample Size (N)",
+    "Compare (Log Scale)",
+    "compare_comparison.png")
 
     return True
 
