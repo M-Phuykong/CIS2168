@@ -1,4 +1,7 @@
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.io.*;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
@@ -8,20 +11,26 @@ public class euler {
     public static void kahn(Graph<Integer, String> graph){
 
         Stack<Integer> s = new Stack<Integer>();
-        Collection<Integer> vertices;
+        Set<Integer> vertices = graph.getVertices().stream().collect(Collectors.toSet());
+        Set<Integer> remove = new HashSet<Integer>();
         
-        for (int v: vertices){
-            int indegree = graph.inDegree(v);
-            System.out.println(v);
-            System.out.println(new StringBuilder().append("indegree ").append(graph.inDegree(v)).toString());
-            if (indegree == 0){
-                s.push(v);
-                graph.removeVertex(v);
+        while (graph.getVertexCount() > 0){
+            for (int v: vertices){
+                if (!remove.contains(v)){
+                    int indegree = graph.inDegree(v);
+    
+                    if (indegree == 0){
+                        s.push(v);
+                        graph.removeVertex(v);
+                        remove.add(v);
+                    }
+                }
             }
-
         }
-
-        System.out.println(s.toString());
+    
+        System.out.println(s.stream()
+                            .map(i -> Integer.toString(i))
+                            .collect(Collectors.joining("")));
     }
 
     public static void main(String[] args) {
